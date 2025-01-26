@@ -1,0 +1,15 @@
+module load raxml/8.2.12
+
+for f in $(ls *.phylip-relaxed); do raxmlHPC-PTHREADS-SSE3 -T 4 -m GTRGAMMA -p 12345 -x 12345 -# 100 -f a -s $f -n Ice.$f; done
+
+cat RAxML_bipartitions.* > RAxML_bipartitions.min75.tre
+
+java -jar astral.5.7.8.jar -i /group/jbondgrp2/emmaJochim/UCE_stuff/simus_manuscript/no_AP/corrected_simus_UCE_no_AP_mafft-nexus-clean-min-75p-taxa-trimaldefault_phylip_relaxed/RAxML_bipartitions.min75.tre -o RAxML_bipartitions.min75.astral.tre 2> RAxML_bipartitions.min75.astral_log.file
+
+perl /Users/emmaadmin/Desktop/ASTRAL/msc_tree_resampling-master/msc_tree_resampling.pl \
+        --gt_file=/Users/emmaadmin/Desktop/ASTRAL/RAxML_bipartitions.min75.astral.tre \
+        --output_dir=/Users/emmaadmin/Desktop/ASTRAL/simus_manuscript \
+        --reps=100 \
+        --sampling=bs \
+        --method=astral \
+        --astral_jar=/Users/emmaadmin/ASTRAL/Astral/astral.5.7.8.jar
