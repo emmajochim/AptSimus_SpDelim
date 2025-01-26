@@ -1,0 +1,29 @@
+######vcf generated following Monjaraz-Ruedas et al., (2024)#######
+##filter to remove indels, min quality 30, min depth 5, biallelic sites
+
+vcftools --gzvcf all_simus_and_outgroup_variants.vcf.gz \
+	--minQ 30 \
+	--min-meanDP 5 \
+	--remove-indels \
+	--min-alleles 2 \
+	--max-alleles 2 \
+	--recode \
+	--out simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5
+	
+##identify individuals with more than 50% missing data
+	
+vcftools --missing-indv --vcf simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5.recode.vcf
+
+##remove ingroup individuals with more than 20% missing data
+
+vcftools --vcf simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5.recode.vcf \
+	--remove-indv AP_89_Aptostichus_simus \
+	--remove-indv AP_63_Aptostichus_simus \
+	--recode \
+	--out simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5_missing50
+
+
+##Dsuite to calculate Pattersons D
+
+./Build/Dsuite Dtrios /Users/emmaadmin/Desktop/Dissertation/Ap_simus/manuscript/VCF/with_outgroup/all_simus_and_outgroup-VCF/simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5_missing50.recode.vcf.gz /Users/emmaadmin/Desktop/Dissertation/Ap_simus/manuscript/VCF/with_outgroup/sets.txt --out-prefix=dsuite_results_simus_final
+
