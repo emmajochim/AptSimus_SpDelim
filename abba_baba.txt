@@ -22,8 +22,11 @@ vcftools --vcf simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5.rec
 	--recode \
 	--out simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5_missing50
 
+##randomly call one SNP from each locus
+
+python3 vcf_single_snp.py simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5_missing50.recode.vcf > simus_and_outgroup_unlinked_snps.vcf
 
 ##Dsuite to calculate Pattersons D
 
-./Build/Dsuite Dtrios /Users/emmaadmin/Desktop/Dissertation/Ap_simus/manuscript/VCF/with_outgroup/all_simus_and_outgroup-VCF/simus_and_outgroup_variants_biallelic_SNPs_only_minQ30_minDP5_missing50.recode.vcf.gz /Users/emmaadmin/Desktop/Dissertation/Ap_simus/manuscript/VCF/with_outgroup/sets.txt --out-prefix=dsuite_results_simus_final
+./Build/Dsuite Dtrios simus_and_outgroup_unlinked_snps.vcf sets.txt --out-prefix=dsuite_results_unlinked_snps
 
